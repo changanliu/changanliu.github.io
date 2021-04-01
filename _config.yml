@@ -7,7 +7,7 @@
 
 # Site Settings
 locale                   : "en-US"
-title                    : "Changan Liu/刘长安"
+title                    : "Chang'an Liu/刘长安"
 title_separator          : "-"
 name                     : &name "Changanliu"
 description              : &description "Changanliu's homepage"
