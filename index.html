@@ -20,32 +20,43 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js"></script>
     <script src="https://unpkg.com/isotope-layout@3/dist/isotope.pkgd.min.js"></script>
 
-    <!-- Custom Style -->
+    <!-- Custom Style (保留你原来的) -->
     <link rel="stylesheet" href="style.css">
 
     <!-- Google Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Asap:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+
     <style>
       @import url('https://fonts.googleapis.com/css2?family=Asap:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap');
 
-      /* ===== Vars: 全站宽度、导航配色与字体（按需修改） ===== */
+      /* ========= 全站“可调接口”（按需修改变量值） ========= */
       :root{
-        --content-width: 1100px;           /* 全站内容宽度：960px / 1100px / 1280px ... */
-        --bar-bg: #10b981;                  /* 顶栏背景色（默认绿色，非蓝） */
-        --bar-fg: #ffffff;                  /* 顶栏文字色 */
+        /* 页面主体最大宽度 */
+        --content-width: 1100px;
+
+        /* 顶栏外观与排版 */
+        --bar-bg: #10b981;               /* 顶栏颜色（非蓝） */
+        --bar-fg: #ffffff;               /* 顶栏文字颜色 */
+        --bar-height: 64px;              /* 顶栏高度（会自动推开正文） */
         --bar-font-family: 'Asap', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
-        --bar-font-size: 15px;              /* 顶栏通用字号 */
-        --brand-font-size: 18px;            /* 中间名字字号 */
-        --brand-font-weight: 800;           /* 中间名字粗细 */
+
+        /* 顶部三处字号（左/中/右） */
+        --bar-left-size: 20px;           /* 左侧 “Welcome!” 字号 */
+        --bar-center-size: 28px;         /* 中间 “Changan Liu” 字号 */
+        --bar-right-size: 20px;          /* 右侧菜单字号 */
+
+        /* 头像尺寸（个人简介右侧图片） */
+        --profile-photo-width: 240px;    /* 例如 200/220/280px 等 */
       }
 
       html, body { margin: 0; }
-      /* 让内容不被粘顶导航遮住 */
-      body.has-sticky { padding-top: 56px; }
 
-      /* 容器：控制全站宽度 */
+      /* 顶栏是 sticky，正文顶部留出同等高度避免遮挡 */
+      body.has-sticky { padding-top: var(--bar-height); }
+
+      /* 统一容器：控制全站宽度 */
       .container{
         max-width: var(--content-width);
         width: 100%;
@@ -54,7 +65,7 @@
         box-sizing: border-box;
       }
 
-      /* ===== 顶部彩色导航条（贴顶，三栏布局） ===== */
+      /* ========= 顶部彩色导航条（贴顶，三栏：左/中/右） ========= */
       .topbar{
         position: sticky;
         top: 0;
@@ -63,10 +74,9 @@
         color: var(--bar-fg);
         border-bottom: 1px solid rgba(255,255,255,0.16);
         font-family: var(--bar-font-family);
-        font-size: var(--bar-font-size);
       }
       .topbar .inner{
-        height: 56px;
+        height: var(--bar-height);
         display: grid;
         grid-template-columns: 1fr auto 1fr;  /* 左 中 右 */
         align-items: center;
@@ -76,21 +86,23 @@
         justify-self: start;
         font-weight: 700;
         opacity: .95;
+        font-size: var(--bar-left-size);
       }
       .topbar .brand{
         justify-self: center;
-        font-weight: var(--brand-font-weight);
-        font-size: var(--brand-font-size);
+        font-weight: 800;
         letter-spacing: .2px;
         color: var(--bar-fg);
         text-decoration: none;
         white-space: nowrap;
+        font-size: var(--bar-center-size);
       }
       .topbar .nav-right{
         justify-self: end;
         display: flex;
         gap: 18px;
         align-items: center;
+        font-size: var(--bar-right-size);
       }
       .topbar .nav-right a{
         color: var(--bar-fg);
@@ -103,39 +115,47 @@
         text-underline-offset: 3px;
       }
 
-      /* 主内容区同样使用可调宽度容器 */
+      /* 主内容区也使用统一可调宽度 */
       #main.container{ max-width: var(--content-width); }
 
-      /* ===== 段落两端对齐（每行看起来等宽） ===== */
+      /* ========= 正文段落两端对齐（每行看起来“等宽”） ========= */
       #main p{
         text-align: justify;
-        text-justify: inter-word;          /* 英文两端对齐 */
-        -ms-text-justify: inter-ideograph; /* 旧版 IE 中文 */
-        text-justify: inter-ideograph;     /* 中文两端对齐 */
-        hyphens: auto;                     /* 英文自动断词 */
-        word-break: normal;
+        text-justify: inter-word;
+        -ms-text-justify: inter-ideograph;
+        text-justify: inter-ideograph;
+        hyphens: auto;
       }
 
-      /* ===== 个人简介：左文右图，带间距 ===== */
+      /* ========= 个人简介：左文右图 + 间距 ========= */
       #intro{
         display: grid;
-        grid-template-columns: 1fr auto;   /* 左文字 右图片 */
-        gap: 24px;                          /* 中间间距 */
+        grid-template-columns: 1fr auto;   /* 左侧文字 | 右侧图片 */
+        gap: 24px;                          /* 左右间距 */
         align-items: start;
       }
       #intro-text{ min-width: 0; }
-      #intro-image img{
-        display: block;
-        width: 220px;       /* 头像宽度，可调 180~280 */
+
+      /* 头像尺寸由变量控制；也兼容你 table 里的 img.profile-photo 用法 */
+      #intro-image img,
+      img.profile-photo{
+        width: var(--profile-photo-width);
+        max-width: 100%;
         height: auto;
         border-radius: 10px;
         box-shadow: 0 2px 12px rgba(0,0,0,.08);
+      }
+
+      /* 你之前用于表格布局的例子（可选）：若继续用 td 包裹图片 */
+      td img.profile-photo{
+        width: var(--profile-photo-width) !important;
+        max-width: 100% !important;
       }
     </style>
   </head>
 
   <body id="body">
-    <!-- ===== Top colored bar (三栏：左 欢迎 / 中 名字 / 右 子页) ===== -->
+    <!-- 顶部 bar：左 Welcome! / 中 Changan Liu / 右 子页面 -->
     <header class="topbar">
       <div class="container inner">
         <div class="bar-left">Welcome!</div>
@@ -170,8 +190,8 @@
           </p>
         </div>
         <div id="intro-image">
-          <!-- 换成你的头像路径 -->
-          <img src="images/changan.jpg" alt="Profile photo of Changan Liu">
+          <!-- 头像放这里；也可在表格中使用 <img class="profile-photo"> -->
+          <img src="images/profile.jpg" alt="Profile photo of Changan Liu">
         </div>
       </div>
 
@@ -184,7 +204,6 @@
       </div>
 
       <div class="grid">
-        <!-- 其余内容保持不变（略） —— 你的 Publications / Talks / Misc 等 -->
         <!-- Preview Videos 360*240px -->
         <div class="list-item highlight previews" data-category="highlight">
           <a><video class="preview1" playsinline="" muted="" autoplay="" poster="images/working.gif" loop=""><source src="images/preview1.mp4" type="video/mp4"></video></a>
@@ -219,7 +238,7 @@
           </ul>
         </div>
 
-        <!-- Truncated Set of Highlights -->
+        <!-- Truncated Set of Highlights (Shown by Default) -->
         <div id="main-highlights">
           <div class="list-item highlight" data-category="highlight">
             <b>May 2025</b> <a href=" ">One paper accepted to IROS 2025</a>
@@ -240,7 +259,30 @@
 
         <!-- All Archived Highlights (Click to Show) -->
         <div id="more-highlights" style="display: none">
-          <!-- ...（略）保持原有内容即可 ... -->
+          <div class="list-item highlight" data-category="highlight">
+            <p class="date">2024</p> <a>One papers accepted to WACV</a>
+          </div>
+          <div class="list-item highlight" data-category="highlight">
+            <p class="date"></p> <a href="https://ieeexplore.ieee.org/document/10801626">One papers accepted to IROS</a>
+          </div>
+          <div class="list-item highlight" data-category="highlight">
+            <p class="date"></p> <a href="https://ieeexplore.ieee.org/document/10611055/">One papers accepted to ICRA</a>
+          </div>
+          <div class="list-item highlight" data-category="highlight">
+            <p class="date"></p> <a href="https://ieeexplore.ieee.org/document/10400920">One papers accepted to RA-L</a>
+          </div>
+          <div class="list-item highlight" data-category="highlight">
+            <p class="date">2023</p>  <a>New patent 202311229497.X</a>
+          </div>
+          <div class="list-item highlight" data-category="highlight">
+            <p class="date"></p> <a>One papers accepted to IROS</a>
+          </div>
+          <div class="list-item highlight" data-category="highlight">
+            <p class="date">2022</p> <a>New patent CN115453880A</a>
+          </div>
+          <div class="list-item highlight" data-category="highlight">
+            <p class="date"></p> <a>One papers accepted to IROS</a>
+          </div>
         </div>
 
         <!-- Toggle highlights button. -->
@@ -248,16 +290,145 @@
           <a id="toggle_highlights_button" href="javascript:toggle_highlights()">Show more</a>
         </div>
 
-        <!-- Publications（以下保持你的原内容） -->
-        <!-- ... 你的 publication / talks / misc 块略 ... -->
+        <!-- Publications -->
+        <div class="list-item publication" data-category="publication">
+          <a href="" class="thumbnail">
+            <img src="images/iros2025.jpeg" alt="" />
+          </a>
+          <div class="project-description">
+            <h3><a href="">Vibration-Aware Trajectory Optimization for Mobile Robots in Wild
+              Environments via Physics-Informed Neural Network</a></h3>
+            <p>
+              Aochun Xu†, Andong Yang†, Wei Li,Yu Hu<br>
+              <i>IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS) 2025</i><br> 
+              <a href="">Accepted</a>
+              <br>
+            </p>
+          </div>
+        </div>
+        
+        <div class="list-item publication" data-category="publication">
+          <a href="https://openaccess.thecvf.com/content/WACV2025/html/Huang_Self-Aligning_Depth-Regularized_Radiance_Fields_for_Asynchronous_RGB-D_Sequences_WACV_2025_paper.html" class="thumbnail">
+            <img src="images/wacv2025.jpg" alt="" />
+          </a>
+          <div class="project-description">
+            <h3><a href="https://ieeexplore.ieee.org/document/10801626">Self-Aligning Depth-Regularized Radiance Fields for Asynchronous RGB-D Sequences</a></h3>
+            <p>
+              Yuxin Huang, Andong Yang, Yuantao Chen, Runyi Yang, Zhenxin Zhu, Chao Hou, Hao Zhao, Guyue Zhou<br>
+              <i>Proceedings of the Winter Conference on Applications of Computer Vision (WACV) 2025</i><br>
+              <font color="49bf9"><i>&#9733; Oral &#9733;</i></font><br>
+              <a href="https://github.com/saythe17/AsyncNeRF">Code</a>&nbsp;&nbsp;&bull;&nbsp;&nbsp;
+              <a href="https://openaccess.thecvf.com/content/WACV2025/papers/Huang_Self-Aligning_Depth-Regularized_Radiance_Fields_for_Asynchronous_RGB-D_Sequences_WACV_2025_paper.pdf">PDF</a>
+              <br>
+            </p>
+          </div>
+        </div>
 
+        <div class="list-item publication" data-category="publication">
+          <a href="https://ieeexplore.ieee.org/document/10801626" class="thumbnail">
+            <img src="images/p4.jpg" alt="" />
+          </a>
+          <div class="project-description">
+            <h3><a href="https://ieeexplore.ieee.org/document/10801626">SCOML: Trajectory Planning Based on Self-Correcting Meta-Reinforcement Learning in Hybrid Terrain for Mobile Robot</a></h3>
+            <p>
+              Andong Yang; Wei Li; Yu Hu<br>
+              <i>IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS) 2024</i><br>
+              <a href="https://ieeexplore.ieee.org/document/10801626">PDF</a>
+              <br>
+            </p>
+          </div>
+        </div>
+
+        <div class="list-item publication" data-category="publication">
+          <a href="https://ieeexplore.ieee.org/document/10611055" class="thumbnail">
+            <img src="images/ICRA2024.jpg" alt="" />
+          </a>
+          <div class="project-description">
+            <h3><a href="https://ieeexplore.ieee.org/document/10611055">F3DMP: Foresighted 3D Motion Planning of Mobile Robots in Wild Environments</a></h3>
+            <p>
+              Andong Yang; Wei Li; Yu Hu<br>
+              <i>IEEE International Conference on Robotics and Automation (ICRA) 2024</i><br>
+              <a href="https://ieeexplore.ieee.org/document/10611055">PDF</a>
+              <br>
+            </p>
+          </div>
+        </div>
+
+        <div class="list-item publication" data-category="publication">
+          <a href="https://ieeexplore.ieee.org/document/10400920" class="thumbnail">
+            <video playsinline="" muted="" autoplay="" loop="" width="180px">
+              <source src="images/preview1.mp4" type="video/mp4">
+            </video>
+          </a>
+          <div class="project-description">
+            <h3><a href="https://ieeexplore.ieee.org/document/10400920">Speed Planning Based on Terrain-Aware Constraint Reinforcement Learning in Rugged Environments</a></h3>
+            <p>
+              Andong Yang; Wei Li; Yu Hu<br>
+              <i>IEEE Robotics and Automation Letters (RA-L) 2024</i><br>
+              <a href="https://ieeexplore.ieee.org/document/10400920">PDF</a>
+              <br>
+            </p>
+          </div>
+        </div>
+
+        <div class="list-item publication" data-category="publication">
+          <a href="https://ieeexplore.ieee.org/document/10341780" class="thumbnail">
+            <img src="images/iros2023.jpg" alt="" />
+          </a>
+          <div class="project-description">
+            <h3><a href="https://ieeexplore.ieee.org/document/10341780">Active Visual SLAM Based on Hierarchical Reinforcement Learning</a></h3>
+            <p>
+              Wensong Chen; Wei Li; Andong Yang; Yu Hu<br>
+              <i>IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS) 2023</i><br>
+              <a href="https://ieeexplore.ieee.org/document/10341780">PDF</a>
+              <br>
+            </p>
+          </div>
+        </div>
+
+        <div class="list-item publication" data-category="publication">
+          <a href="https://ieeexplore.ieee.org/document/9981289" class="thumbnail">
+            <img src="images/p1.jpg" alt="" />
+          </a>
+          <div class="project-description">
+            <h3><a href="https://ieeexplore.ieee.org/document/9981289">SMS-MPC: Adversarial Learning-based Simultaneous Prediction Control with Single Model for Mobile Robots</a></h3>
+            <p>
+              Andong Yang; Wei Li; Yu Hu<br>
+              <i>IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS) 2022</i><br>
+              <a href="https://ieeexplore.ieee.org/document/9981289">PDF</a>
+              <br>
+            </p>
+          </div>
+        </div>
+
+        <!-- Talks -->
+        <div class="list-item talk previews" data-category="talk">
+          <img src="images/talkpreviewv4.jpg" alt="Building a self-driving car" width="840px">
+        </div>
+        
+        <div class="list-item talk" data-category="talk">
+          <p class="date">2024</p>Large-scale scene reconstruction based on Gaussian splatting
+        </div>
+
+        <div class="list-item talk" data-category="talk">
+          <p class="date">2023</p>Global path planning based on satellite images
+        </div>
+
+        <div class="list-item talk" data-category="talk">
+          <p class="date">2022</p>Building a self-driving car
+        </div>
+
+        <!-- Misc -->
+        <div class="list-item misc" data-category="misc">
+          <p class="date">2024</p> [blog] <a href="https://andongyang.github.io/blog/blog1">Tools for Finding Research Papers</a>
+        </div>
       </div>
 
       <div id="footer">The website template was borrowed from <a href="https://github.com/andyzeng/andyzeng.github.io">Andy</a> and <a href="https://jonbarron.info/">Jon</a>.</div>
     </div>
 
     <script>
-      // 保证有粘顶导航时，正文不被遮
+      // 顶栏为 sticky，给 body 加等高 padding 避免遮挡
       document.addEventListener('DOMContentLoaded', function(){
         document.body.classList.add('has-sticky');
       });
