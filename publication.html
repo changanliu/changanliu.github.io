@@ -1,0 +1,207 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Publications — Changan Liu</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- 可选：与首页一致的 Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-9H53ZMR8XD"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-9H53ZMR8XD');
+    </script>
+
+    <!-- 站点通用样式（如果有） -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- 字体 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Asap:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+      /* ====== 可调参数（和首页保持一致） ====== */
+      :root{
+        --content-width: 1100px;
+
+        --bar-bg: #10b981;        /* 顶栏背景色（非蓝） */
+        --bar-fg: #ffffff;        /* 顶栏文字色 */
+        --bar-height: 64px;
+        --bar-font-family: 'Asap', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+
+        --bar-left-size: 20px;    /* 左 Welcome! 字号 */
+        --bar-center-size: 28px;  /* 中 Changan Liu 字号 */
+        --bar-right-size: 20px;   /* 右菜单字号 */
+      }
+
+      html, body { margin: 0; font-family: 'Asap', system-ui, -apple-system, Segoe UI, Roboto, sans-serif; }
+      body { color: #111827; }
+      body.has-sticky { padding-top: var(--bar-height); }
+
+      .container{
+        max-width: var(--content-width);
+        width: 100%;
+        margin: 0 auto;
+        padding: 0 20px;
+        box-sizing: border-box;
+      }
+
+      /* 顶部 bar（三栏：左/中/右） */
+      .topbar{
+        position: sticky; top: 0; z-index: 1000;
+        background: var(--bar-bg); color: var(--bar-fg);
+        border-bottom: 1px solid rgba(255,255,255,0.16);
+        font-family: var(--bar-font-family);
+      }
+      .topbar .inner{
+        height: var(--bar-height);
+        display: grid;
+        grid-template-columns: 1fr auto 1fr;
+        align-items: center;
+        gap: 16px;
+      }
+      .topbar .bar-left{
+        justify-self: start; font-weight: 700; opacity: .95; font-size: var(--bar-left-size);
+      }
+      .topbar .brand{
+        justify-self: center; font-weight: 800; letter-spacing: .2px; color: var(--bar-fg);
+        text-decoration: none; white-space: nowrap; font-size: var(--bar-center-size);
+      }
+      .topbar .nav-right{
+        justify-self: end; display: flex; gap: 18px; align-items: center; font-size: var(--bar-right-size);
+      }
+      .topbar .nav-right a{
+        color: var(--bar-fg); text-decoration: none; opacity: .92;
+      }
+      .topbar .nav-right a:hover{ opacity: 1; text-decoration: underline; text-underline-offset: 3px; }
+      .topbar .nav-right a.active{ text-decoration: underline; text-underline-offset: 3px; }
+
+      /* 页面标题 */
+      .page-title{
+        margin: 28px 0 8px 0;
+        font-size: 32px; font-weight: 800; letter-spacing: .2px;
+      }
+      .page-subtitle{
+        margin: 0 0 24px 0; color: #374151;
+      }
+
+      /* 列表样式 */
+      .pub-list{ list-style: none; padding: 0; margin: 24px 0 64px 0; }
+      .pub-item{ padding: 16px 0; border-bottom: 1px dashed #e5e7eb; }
+      .pub-item:last-child{ border-bottom: none; }
+      .pub-title{
+        font-weight: 700; font-size: 18px; margin: 0 0 6px 0;
+      }
+      .pub-meta{
+        margin: 0; color: #374151;
+      }
+      .pub-meta i{ color:#374151; }
+      .pub-meta a{ color: #2563eb; text-decoration: none; }
+      .pub-meta a:hover{ text-decoration: underline; text-underline-offset: 2px; }
+      .year-badge{
+        display:inline-block; margin-left:.5rem; padding: 1px 8px; border-radius: 999px;
+        background: #eef2ff; color:#3730a3; font-size:12px; font-weight:700; vertical-align: middle;
+      }
+
+      /* 两端对齐（段落观感更“等宽”） */
+      .pub-meta, .page-subtitle{ text-align: justify; text-justify: inter-word; hyphens: auto; }
+    </style>
+  </head>
+
+  <body>
+    <!-- 顶部导航 -->
+    <header class="topbar">
+      <div class="container inner">
+        <div class="bar-left">Welcome!</div>
+        <a class="brand" href="/">Changan Liu</a>
+        <nav class="nav-right">
+          <a href="/research.html">Research</a>
+          <a href="/publication.html" class="active">Publication</a>
+          <a href="/talks.html">Talks</a>
+          <a href="/services.html">Services</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="container">
+      <h1 class="page-title">Publications</h1>
+      <p class="page-subtitle">A selection of my recent works. CCF rankings noted where applicable.</p>
+
+      <ul class="pub-list">
+
+        <li class="pub-item">
+          <div class="pub-title">
+            Promoting Fairness in Information Access within Social Networks
+            <span class="year-badge">2026</span>
+          </div>
+          <p class="pub-meta">
+            <b>Changan Liu</b>, Xiaotian Zhou, Ahad N. Zehmakan, Zhongzhi Zhang<br/>
+            <i>Accepted by ICDE (CCF&nbsp;A).</i>
+          </p>
+        </li>
+
+        <li class="pub-item">
+          <div class="pub-title">
+            Efficient Algorithms for Random Walk Centrality
+            <span class="year-badge">2025</span>
+          </div>
+          <p class="pub-meta">
+            <b>Changan Liu</b>, Zixuan Xie, Ahad N. Zehmakan, Zhongzhi Zhang<br/>
+            <i>Accepted by TKDE (CCF&nbsp;A).</i>
+            DOI:&nbsp;<a href="https://doi.org/10.1109/TKDE.2025.3621520" target="_blank" rel="noopener">10.1109/TKDE.2025.3621520</a>
+          </p>
+        </li>
+
+        <li class="pub-item">
+          <div class="pub-title">
+            Fast Query of Biharmonic Distance in Networks
+            <span class="year-badge">2024</span>
+          </div>
+          <p class="pub-meta">
+            <b>Changan Liu</b>, Ahad N. Zehmakan, Zhongzhi Zhang<br/>
+            <i>Published in KDD (CCF&nbsp;A).</i>
+            DOI:&nbsp;<a href="https://doi.org/10.1145/3637528.3671856" target="_blank" rel="noopener">10.1145/3637528.3671856</a>&nbsp;·&nbsp;
+            <a href="https://dl.acm.org/doi/10.1145/3637528.3671856" target="_blank" rel="noopener">Link</a>
+          </p>
+        </li>
+
+        <li class="pub-item">
+          <div class="pub-title">
+            A Fast Algorithm for Moderating Critical Nodes via Edge Removal
+            <span class="year-badge">2024</span>
+          </div>
+          <p class="pub-meta">
+            <b>Changan Liu</b>, Xiaotian Zhou, Ahad N. Zehmakan, Zhongzhi Zhang<br/>
+            <i>Published in TKDE (CCF&nbsp;A).</i>
+            DOI:&nbsp;<a href="https://doi.org/10.1109/TKDE.2023.3309987" target="_blank" rel="noopener">10.1109/TKDE.2023.3309987</a>&nbsp;·&nbsp;
+            <a href="https://ieeexplore.ieee.org/document/10234576" target="_blank" rel="noopener">Link</a>
+          </p>
+        </li>
+
+        <li class="pub-item">
+          <div class="pub-title">
+            Finding Influencers in Complex Networks: An Effective Deep Reinforcement Learning Approach
+            <span class="year-badge">2024</span>
+          </div>
+          <p class="pub-meta">
+            <b>Changan Liu</b>, Changjun Fan, Zhongzhi Zhang<br/>
+            <i>Published in The Computer Journal (CCF&nbsp;B).</i>
+            DOI:&nbsp;<a href="https://doi.org/10.1093/comjnl/bxac187" target="_blank" rel="noopener">10.1093/comjnl/bxac187</a>&nbsp;·&nbsp;
+            <a href="https://academic.oup.com/comjnl/advance-article-abstract/doi/10.1093/comjnl/bxac187/6965541" target="_blank" rel="noopener">Link</a>
+          </p>
+        </li>
+
+      </ul>
+    </main>
+
+    <script>
+      // 与首页一致：给 body 增加顶部 padding，避免 sticky bar 遮挡
+      document.addEventListener('DOMContentLoaded', function(){
+        document.body.classList.add('has-sticky');
+      });
+    </script>
+  </body>
+</html>
