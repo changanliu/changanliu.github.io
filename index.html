@@ -20,7 +20,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js"></script>
     <script src="https://unpkg.com/isotope-layout@3/dist/isotope.pkgd.min.js"></script>
 
-    <!-- Custom Style (保留你原来的) -->
+    <!-- Custom Style -->
     <link rel="stylesheet" href="style.css">
 
     <!-- Google Font -->
@@ -37,7 +37,7 @@
         --content-width: 1100px;
 
         /* 顶栏外观与排版 */
-        --bar-bg: #EAB308;               /* 顶栏颜色（非蓝） */
+        --bar-bg: #EAB308;               /* 秋叶黄 */
         --bar-fg: #ffffff;               /* 顶栏文字颜色 */
         --bar-height: 64px;              /* 顶栏高度（会自动推开正文） */
         --bar-font-family: 'Asap', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
@@ -48,7 +48,10 @@
         --bar-right-size: 20px;          /* 右侧菜单字号 */
 
         /* 头像尺寸（个人简介右侧图片） */
-        --profile-photo-width: 150px;    /* 例如 200/220/280px 等 */
+        --profile-photo-width: 150px;
+
+        /* 头像下移量：JS 会自动覆盖为 h1 的高度 + 外边距；也可手动写死数值 */
+        --intro-image-shift: 0px;
       }
 
       html, body { margin: 0; }
@@ -136,7 +139,10 @@
       }
       #intro-text{ min-width: 0; }
 
-      /* 头像尺寸由变量控制；也兼容你 table 里的 img.profile-photo 用法 */
+      /* 头像尺寸由变量控制；支持“整体下移” */
+      #intro-image{
+        margin-top: var(--intro-image-shift);  /* 关键：让图片顶对段落，而非对 h1 */
+      }
       #intro-image img,
       img.profile-photo{
         width: var(--profile-photo-width);
@@ -175,26 +181,21 @@
           <h1>Chang'an Liu</h1>
           <p>
             I am a postdoctoral Research Fellow with the College of Computing and Data Science, Nanyang Technological University, working with Prof. <a href="https://siqiangluo.com/">Siqiang Luo</a>. I received my PhD from the <a href="https://ai.fudan.edu.cn/"> College of Computing and Artificial Intelligence</a>, <a href="https://www.fudan.edu.cn/">Fudan University</a>, where I was fortunately supervised by Prof. <a href="https://scholar.google.com/citations?user=DrcEuSkAAAAJ&hl=zh-CN">Zhongzhi Zhang</a>. Before that, I received my Bachelor's degree from the School of Software, Dalian University of Technology, advised by Prof. <a href="https://www.xia.ai/home">Feng Xia</a>. My current research interests lie in graph data mining, graph algorithm learning and deep reinforcement learning.
-            <!-- <div id="more-bio" style="display: none">
-              <br>
-              <p>Andong Yang is a postdoctoral researcher at Tsinghua University, working with Professor Lu Fang. He obtained his PhD from the Institute of Computing Technology, Chinese Academy of Sciences, under the supervision of Professor Yu Hu. His research focuses on motion planning and control in robotics, with an interest in building machines and algorithms that enable robots to intelligently operate in challenging environments. Andong has published papers in leading robotics conferences and journals, including IROS, ICRA, and RA-L. He has also served as a reviewer for ICRA and RA-L and has been awarded the Academic First Class Scholarship.</p>
-            </div> -->
-            <br>
-            <a href="javascript:toggle_bio()">Formal Bio</a>&nbsp;&nbsp;&nbsp;&nbsp;
-            <a href="https://github.com/changanliu">Github</a>&nbsp;&nbsp;&nbsp;&nbsp;
-            <a href="https://scholar.google.com/citations?user=uk4iwHwAAAAJ&hl=en">G. Scholar</a>&nbsp;&nbsp;&nbsp;&nbsp;
-            <a href="https://www.linkedin.com/in/andongyang/">LinkedIn</a>&nbsp;&nbsp;&nbsp;&nbsp;
-            <br><br>
-            Internship opportunities are available, and I'm always open to collaboration. Feel free to contact me: changan.liu@ntu.edu.sg
-            <br><br>
           </p>
+          <br>
+          <a href="javascript:toggle_bio()">Formal Bio</a>&nbsp;&nbsp;&nbsp;&nbsp;
+          <a href="https://github.com/changanliu">Github</a>&nbsp;&nbsp;&nbsp;&nbsp;
+          <a href="https://scholar.google.com/citations?user=uk4iwHwAAAAJ&hl=en">G. Scholar</a>&nbsp;&nbsp;&nbsp;&nbsp;
+          <a href="https://www.linkedin.com/in/andongyang/">LinkedIn</a>&nbsp;&nbsp;&nbsp;&nbsp;
+          <br><br>
+          Internship opportunities are available, and I'm always open to collaboration. Feel free to contact me: changan.liu@ntu.edu.sg
+          <br><br>
         </div>
+
         <div id="intro-image">
-          <!-- 头像放这里；也可在表格中使用 <img class="profile-photo"> -->
           <img src="images/changan.jpg" alt="Profile photo of Changan Liu">
         </div>
       </div>
-
 
       <div class="grid">
         <!-- Preview Videos 360*240px -->
@@ -224,14 +225,27 @@
           </ul>
         </div>
 
-
-   <div id="footer">The website template was borrowed from <a href="https://github.com/andyzeng/andyzeng.github.io">Andy</a> and <a href="https://jonbarron.info/">Jon</a>.</div>
+        <div id="footer">The website template was borrowed from <a href="https://github.com/andyzeng/andyzeng.github.io">Andy</a> and <a href="https://jonbarron.info/">Jon</a>.</div>
+      </div>
     </div>
 
     <script>
       // 顶栏为 sticky，给 body 加等高 padding 避免遮挡
       document.addEventListener('DOMContentLoaded', function(){
         document.body.classList.add('has-sticky');
+
+        // —— 计算 h1 的高度 + margin-bottom，把头像整体下移同样的量 —— //
+        const h1 = document.querySelector('#intro-text h1');
+        const imgBox = document.getElementById('intro-image');
+        if (h1 && imgBox) {
+          const styles = getComputedStyle(h1);
+          const h = h1.getBoundingClientRect().height;
+          const mb = parseFloat(styles.marginBottom || 0);
+          imgBox.style.marginTop = (h + mb) + 'px';
+          // 如果你想保留“手动接口”，可注释上一行，改为：
+          // imgBox.style.marginTop = getComputedStyle(document.documentElement)
+          //   .getPropertyValue('--intro-image-shift');
+        }
       });
 
       // Isotope grid.
@@ -281,6 +295,7 @@
           if (currButton.getAttribute('data-filter') == defaultFilterValue) {
             currButton.classList.add('is-checked');
           } else {
+            currButton.classList.removeClass && currButton.classList.removeClass('is-checked');
             currButton.classList.remove('is-checked');
           }
         }
@@ -288,7 +303,8 @@
 
       function toggle_bio() {
         var x = document.getElementById("more-bio");
-        if (x.style.display === "none") {
+        if (!x) return;
+        if (x.style.display === "none" || x.style.display === "") {
           x.style.display = "block";
         } else {
           x.style.display = "none";
@@ -299,6 +315,7 @@
         var x = document.getElementById("main-highlights");
         var y = document.getElementById("more-highlights");
         var b = document.getElementById("toggle_highlights_button")
+        if (!x || !y || !b) return;
         if (y.style.display === "none") {
           x.style.display = "none";
           y.style.display = "block";
