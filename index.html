@@ -26,40 +26,38 @@
     <!-- Google Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Asap:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Asap:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
 
     <style>
-      @import url('https://fonts.googleapis.com/css2?family=Asap:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap');
+      @import url('https://fonts.googleapis.com/css2?family=Asap:ital,wght@0,400;0,600;0,700;1,400&display=swap');
 
       /* ========= 全站“可调接口”（按需修改变量值） ========= */
       :root{
-        /* 页面主体最大宽度 */
         --content-width: 1100px;
 
         /* 顶栏外观与排版 */
         --bar-bg: #EAB308;               /* 秋叶黄 */
         --bar-fg: #ffffff;               /* 顶栏文字颜色 */
-        --bar-height: 64px;              /* 顶栏高度（会自动推开正文） */
+        --bar-height: 64px;
         --bar-font-family: 'Asap', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
 
         /* 顶部三处字号（左/中/右） */
-        --bar-left-size: 20px;           /* 左侧 “Welcome!” 字号 */
-        --bar-center-size: 28px;         /* 中间 “Changan Liu” 字号 */
-        --bar-right-size: 20px;          /* 右侧菜单字号 */
+        --bar-left-size: 20px;
+        --bar-center-size: 28px;
+        --bar-right-size: 20px;
 
-        /* 头像尺寸（个人简介右侧图片） */
+        /* 头像尺寸与下移量 */
         --profile-photo-width: 150px;
-
-        /* 头像下移量：JS 会自动覆盖为 h1 的高度 + 外边距；也可手动写死数值 */
         --intro-image-shift: 0px;
+
+        /* What's New 卡片尺寸 */
+        --wn-card-width: 320px; /* 你可以 280/320/360px 调整 */
       }
 
-      html, body { margin: 0; }
+      html, body { margin: 0; font-family: 'Asap', system-ui, -apple-system, Segoe UI, Roboto, sans-serif; }
 
-      /* 顶栏是 sticky，正文顶部留出同等高度避免遮挡 */
       body.has-sticky { padding-top: var(--bar-height); }
 
-      /* 统一容器：控制全站宽度 */
       .container{
         max-width: var(--content-width);
         width: 100%;
@@ -68,7 +66,7 @@
         box-sizing: border-box;
       }
 
-      /* ========= 顶部彩色导航条（贴顶，三栏：左/中/右） ========= */
+      /* ========= 顶部彩色导航条 ========= */
       .topbar{
         position: sticky;
         top: 0;
@@ -81,47 +79,30 @@
       .topbar .inner{
         height: var(--bar-height);
         display: grid;
-        grid-template-columns: 1fr auto 1fr;  /* 左 中 右 */
+        grid-template-columns: 1fr auto 1fr;
         align-items: center;
         gap: 16px;
       }
       .topbar .bar-left{
-        justify-self: start;
-        font-weight: 700;
-        opacity: .95;
-        font-size: var(--bar-left-size);
+        justify-self: start; font-weight: 700; opacity: .95; font-size: var(--bar-left-size);
       }
       .topbar .brand{
-        justify-self: center;
-        font-weight: 800;
-        letter-spacing: .2px;
-        color: var(--bar-fg);
-        text-decoration: none;
-        white-space: nowrap;
-        font-size: var(--bar-center-size);
+        justify-self: center; font-weight: 800; letter-spacing: .2px; color: var(--bar-fg);
+        text-decoration: none; white-space: nowrap; font-size: var(--bar-center-size);
       }
       .topbar .nav-right{
-        justify-self: end;
-        display: flex;
-        gap: 18px;
-        align-items: center;
-        font-size: var(--bar-right-size);
+        justify-self: end; display: flex; gap: 18px; align-items: center; font-size: var(--bar-right-size);
       }
       .topbar .nav-right a{
-        color: var(--bar-fg);
-        text-decoration: none;
-        opacity: .92;
+        color: var(--bar-fg); text-decoration: none; opacity: .92;
       }
       .topbar .nav-right a:hover{
-        opacity: 1;
-        text-decoration: underline;
-        text-underline-offset: 3px;
+        opacity: 1; text-decoration: underline; text-underline-offset: 3px;
       }
 
-      /* 主内容区也使用统一可调宽度 */
       #main.container{ max-width: var(--content-width); }
 
-      /* ========= 正文段落两端对齐（每行看起来“等宽”） ========= */
+      /* ========= 段落两端对齐 ========= */
       #main p{
         text-align: justify;
         text-justify: inter-word;
@@ -133,16 +114,12 @@
       /* ========= 个人简介：左文右图 + 间距 ========= */
       #intro{
         display: grid;
-        grid-template-columns: 1fr auto;   /* 左侧文字 | 右侧图片 */
-        gap: 24px;                          /* 左右间距 */
+        grid-template-columns: 1fr auto;
+        gap: 24px;
         align-items: start;
       }
       #intro-text{ min-width: 0; }
-
-      /* 头像尺寸由变量控制；支持“整体下移” */
-      #intro-image{
-        margin-top: var(--intro-image-shift);  /* 关键：让图片顶对段落，而非对 h1 */
-      }
+      #intro-image{ margin-top: var(--intro-image-shift); }
       #intro-image img,
       img.profile-photo{
         width: var(--profile-photo-width);
@@ -151,17 +128,71 @@
         border-radius: 10px;
         box-shadow: 0 2px 12px rgba(0,0,0,.08);
       }
-
-      /* 你之前用于表格布局的例子（可选）：若继续用 td 包裹图片 */
       td img.profile-photo{
         width: var(--profile-photo-width) !important;
         max-width: 100% !important;
       }
+
+      /* ========= What's New 滑动窗口 ========= */
+      #whats-new{ margin: 28px 0 8px; }
+      #whats-new h2{
+        margin: 28px 0 12px;
+        font-size: 24px; font-weight: 800; letter-spacing:.2px; color:#1f2937;
+      }
+      .wn-shell{
+        position: relative;
+        display: grid;
+        grid-template-columns: 40px 1fr 40px;  /* 左按钮 | 轨道 | 右按钮 */
+        align-items: center;
+        gap: 8px;
+      }
+      .wn-btn{
+        height: 40px; width: 40px; border-radius: 999px;
+        border: none; cursor: pointer; background: #f3f4f6; color: #111827;
+        font-size: 20px; line-height: 40px; text-align: center;
+        transition: transform .1s ease, background .2s ease;
+      }
+      .wn-btn:hover{ background:#e5e7eb; transform: translateY(-1px); }
+      .wn-btn:disabled{ opacity:.4; cursor:not-allowed; }
+
+      .wn-track{
+        display: flex; gap: 16px; overflow-x: auto; padding: 4px;
+        scroll-snap-type: x mandatory; scroll-behavior: smooth;
+        -webkit-overflow-scrolling: touch;
+      }
+      .wn-card{
+        flex: 0 0 var(--wn-card-width);
+        scroll-snap-align: start;
+        background: #fff;
+        border: 1px solid #e5e7eb;
+        border-radius: 14px;
+        padding: 14px 16px;
+        box-shadow: 0 2px 8px rgba(0,0,0,.04);
+      }
+      .wn-card .wn-date{
+        font-size: 12px; color: #6b7280; margin-bottom: 6px;
+      }
+      .wn-card .wn-title{
+        font-weight: 700; margin: 4px 0 6px 0;
+      }
+      .wn-card p{ margin: 0; color:#374151; }
+      .wn-card a{ color:#2563eb; text-decoration:none; }
+      .wn-card a:hover{ text-decoration: underline; text-underline-offset: 2px; }
+
+      /* ========= Section 标题 ========= */
+      .intro1{ font-size: 22px; font-weight: 800; }
+
+      /* ========= Footer 居中 ========= */
+      #footer{
+        text-align: center; padding: 28px 0; color: #6b7280; font-size: 14px;
+      }
+      /* 让 footer 也在 container 宽度里居中显示 */
+      #footer .container{ padding-bottom: 16px; }
     </style>
   </head>
 
   <body id="body">
-    <!-- 顶部 bar：左 Welcome! / 中 Changan Liu / 右 子页面 -->
+    <!-- 顶部 bar -->
     <header class="topbar">
       <div class="container inner">
         <div class="bar-left">Welcome!</div>
@@ -176,6 +207,7 @@
     </header>
 
     <div id="main" class="container">
+      <!-- Intro -->
       <div id="intro">
         <div id="intro-text">
           <h1>Chang'an Liu</h1>
@@ -196,32 +228,71 @@
         </div>
       </div>
 
+      <!-- What's New（放在 Education 之上） -->
+      <section id="whats-new">
+        <h2>What’s New</h2>
+        <div class="wn-shell">
+          <button class="wn-btn" id="wn-prev" aria-label="Previous">‹</button>
 
-        <!-- Highlights -->
-        <div class="list-item highlight description" data-category="highlight">
-          <h2 class="intro1" style="color: #6B8E23;">Education and Academic Positions</h2>
-          <ul>
-            <li><span style="display: inline-block; width: 160px;">Mar 2025 - Present</span> Postdoc, Nanyang Technological University, Singapore</li>
-            <li><span style="display: inline-block; width: 160px;">Sep 2019 - Jun 2024</span> Ph.D., Fudan University, Shanghai</li>
-            <li><span style="display: inline-block; width: 160px;">Sep 2015 - Jun 2019</span> B.Eng., Dalian University of Technology, Dalian</li>
-          </ul>
+          <div class="wn-track" id="wn-track" tabindex="0">
+            <!-- === 每个 .wn-card 就是一条动态；自己替换内容即可 === -->
+            <article class="wn-card">
+              <div class="wn-date">May 2025</div>
+              <div class="wn-title">Paper accepted to IROS 2025</div>
+              <p>Vibration-Aware Trajectory Optimization for Mobile Robots in Wild Environments via PINN.</p>
+            </article>
 
-          <h2 class="intro1" style="color: #6B8E23;">Professional Services</h2>
-          <ul>
-            <li> Program member, The Web Conference (WWW)</li>
-            <li> Reviewer, ACM SIGKDD Conference on Knowledge Discovery and Data Mining (KDD)</li>
-            <li> Reviewer, IEEE Transactions on Neural Networks and Learning Systems (TNNLS)</li>
-            <li> Reviewer, IEEE Transactions on Knowledge and Data Engineering (TKDE)</li>
-            <li> Reviewer, Data & Knowledge Engineering (DKE)</li>
-          </ul>
-          
-          <!-- <h2 class="intro1" style="color: #6B8E23;">Honors and Awards</h2>
-          <ul>
-            <li>Second Prize in Obstacle Avoidance and Highway Driving, World Intelligent Driving Challenge, 2022</li>
-          </ul> -->
+            <article class="wn-card">
+              <div class="wn-date">Nov 2024</div>
+              <div class="wn-title"><a href="https://dl.acm.org/doi/10.1145/3637528.3671856" target="_blank" rel="noopener">BD @ KDD 2024</a></div>
+              <p>Our KDD paper on fast biharmonic distance queries is online.</p>
+            </article>
+
+            <article class="wn-card">
+              <div class="wn-date">2025</div>
+              <div class="wn-title">Random Walk Centrality</div>
+              <p>TKDE acceptance: Efficient Algorithms for Random Walk Centrality (CCF A).</p>
+            </article>
+
+            <article class="wn-card">
+              <div class="wn-date">2026</div>
+              <div class="wn-title">ICDE acceptance</div>
+              <p>Promoting fairness in information access within social networks (CCF A).</p>
+            </article>
+          </div>
+
+          <button class="wn-btn" id="wn-next" aria-label="Next">›</button>
         </div>
+      </section>
+
+      <!-- Highlights / Education -->
+      <div class="list-item highlight description" data-category="highlight">
+        <h2 class="intro1" style="color: #6B8E23;">Education and Academic Positions</h2>
+        <ul>
+          <li><span style="display: inline-block; width: 160px;">Mar 2025 - Present</span> Postdoc, Nanyang Technological University, Singapore</li>
+          <li><span style="display: inline-block; width: 160px;">Sep 2019 - Jun 2024</span> Ph.D., Fudan University, Shanghai</li>
+          <li><span style="display: inline-block; width: 160px;">Sep 2015 - Jun 2019</span> B.Eng., Dalian University of Technology, Dalian</li>
+        </ul>
+
+        <h2 class="intro1" style="color: #6B8E23;">Professional Services</h2>
+        <ul>
+          <li> Program member, The Web Conference (WWW)</li>
+          <li> Reviewer, ACM SIGKDD Conference on Knowledge Discovery and Data Mining (KDD)</li>
+          <li> Reviewer, IEEE Transactions on Neural Networks and Learning Systems (TNNLS)</li>
+          <li> Reviewer, IEEE Transactions on Knowledge and Data Engineering (TKDE)</li>
+          <li> Reviewer, Data & Knowledge Engineering (DKE)</li>
+        </ul>
       </div>
-    <div id="footer">The website template was borrowed from <a href="https://github.com/andyzeng/andyzeng.github.io">Andy</a> and <a href="https://jonbarron.info/">Jon</a>.</div>
+    </div>
+
+    <!-- Footer：放入 container 以获得一致的居中排版 -->
+    <div id="footer">
+      <div class="container">
+        The website template was borrowed from
+        <a href="https://github.com/andyzeng/andyzeng.github.io" target="_blank" rel="noopener">Andy</a>
+        and
+        <a href="https://jonbarron.info/" target="_blank" rel="noopener">Jon</a>.
+      </div>
     </div>
 
     <script>
@@ -229,7 +300,7 @@
       document.addEventListener('DOMContentLoaded', function(){
         document.body.classList.add('has-sticky');
 
-        // —— 计算 h1 的高度 + margin-bottom，把头像整体下移同样的量 —— //
+        // 计算 h1 的高度 + margin-bottom，把头像整体下移同样的量
         const h1 = document.querySelector('#intro-text h1');
         const imgBox = document.getElementById('intro-image');
         if (h1 && imgBox) {
@@ -237,13 +308,41 @@
           const h = h1.getBoundingClientRect().height;
           const mb = parseFloat(styles.marginBottom || 0);
           imgBox.style.marginTop = (h + mb) + 'px';
-          // 如果你想保留“手动接口”，可注释上一行，改为：
-          // imgBox.style.marginTop = getComputedStyle(document.documentElement)
-          //   .getPropertyValue('--intro-image-shift');
         }
       });
 
-      // Isotope grid.
+      // What's New：左右按钮控制滚动
+      (function(){
+        const track = document.getElementById('wn-track');
+        const prev  = document.getElementById('wn-prev');
+        const next  = document.getElementById('wn-next');
+
+        function getCardWidth(){
+          const first = track.querySelector('.wn-card');
+          if (!first) return 320;
+          const style = getComputedStyle(first);
+          const w = first.getBoundingClientRect().width + parseFloat(style.marginRight || 0);
+          return Math.ceil(w + 16); // gap 16
+        }
+
+        function scrollByCard(dir){
+          const delta = getCardWidth() * (dir > 0 ? 1 : -1);
+          track.scrollBy({ left: delta, behavior: 'smooth' });
+        }
+        prev?.addEventListener('click', ()=>scrollByCard(-1));
+        next?.addEventListener('click', ()=>scrollByCard(1));
+
+        // 鼠标滚轮（Shift+滚轮 或 触控板）横向滚动
+        track?.addEventListener('wheel', (e)=>{
+          if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) return; // 已经是横向
+          if (e.shiftKey) {
+            track.scrollBy({ left: e.deltaY, behavior: 'smooth' });
+            e.preventDefault();
+          }
+        }, { passive: false });
+      })();
+
+      // Isotope grid（若无 .grid 内容也不影响）
       var $grid = $('.grid').isotope({
         itemSelector: '.list-item',
         layoutMode: 'fitRows',
@@ -262,68 +361,19 @@
         }
       });
 
-      // Bind filter button click.
-      $('#filters').on( 'click', 'button', function() {
-        var filterValue = $( this ).attr('data-filter');
-        localStorage.setItem('filterValue', filterValue);
-        $grid.isotope({ filter: filterValue });
-      });
-
-      // Change is-checked class on buttons.
-      $('.button-group').each( function( i, buttonGroup ) {
-        var $buttonGroup = $( buttonGroup );
-        $buttonGroup.on( 'click', 'button', function() {
-          $buttonGroup.find('.is-checked').removeClass('is-checked');
-          $( this ).addClass('is-checked');
-        });
-      });
-
       function update_isotope() {
-        // Retrieve cached button click.
         var defaultFilterValue = localStorage.getItem('filterValue');
-        if (defaultFilterValue == null) {
-          defaultFilterValue = ".highlight"
-        }
+        if (defaultFilterValue == null) { defaultFilterValue = ".highlight" }
         $grid.isotope({ filter: defaultFilterValue });
         var buttons = document.getElementsByClassName("button");
         for (var currButton of buttons) {
           if (currButton.getAttribute('data-filter') == defaultFilterValue) {
             currButton.classList.add('is-checked');
           } else {
-            currButton.classList.removeClass && currButton.classList.removeClass('is-checked');
-            currButton.classList.remove('is-checked');
+            currButton.classList.remove && currButton.classList.remove('is-checked');
           }
         }
       }
-
-      function toggle_bio() {
-        var x = document.getElementById("more-bio");
-        if (!x) return;
-        if (x.style.display === "none" || x.style.display === "") {
-          x.style.display = "block";
-        } else {
-          x.style.display = "none";
-        }
-      }
-
-      function toggle_highlights() {
-        var x = document.getElementById("main-highlights");
-        var y = document.getElementById("more-highlights");
-        var b = document.getElementById("toggle_highlights_button")
-        if (!x || !y || !b) return;
-        if (y.style.display === "none") {
-          x.style.display = "none";
-          y.style.display = "block";
-          b.innerHTML = "Show less"
-          update_isotope();
-        } else {
-          x.style.display = "block";
-          y.style.display = "none";
-          b.innerHTML = "Show more"
-          update_isotope();
-        }
-      }
-     
       update_isotope();
     </script>
   </body>
